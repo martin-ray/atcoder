@@ -48,15 +48,46 @@ void dfs(long long int n,long long int op_time){
 
 }
 
+const int INF = 100100100;
+const int MX = 10000000;
+
 int main(void){
 
     int n;
     std::cin >> a >> n;
-    dfs(n,0);
 
-    if(ans == 100100100100100){
-        ans = -1;
+    std::vector<int> dist(MX,INF);
+    std::queue<int> que;
+
+    dist[1] = 0;
+    que.push(1);
+
+    while(!que.empty()){
+        long long int  now = que.front();
+        que.pop();
+        if(now*a < MX){
+            que.push(now*a);
+            if(dist[now*a]==INF)dist[now*a] = dist[now] + 1;
+        }
+        //ローテーション
+        if(now>=10&&now%10!=0){
+            std::string ns = std::to_string(now);
+            ns = ns.substr(ns.length()-1) + ns.substr(0,ns.length()-1);
+            int nextn = std::stoi(ns);
+            if(dist[nextn]==INF){
+                que.push(nextn);
+                dist[nextn] = dist[now] + 1;
+            }
+            
+        }
     }
-    std::cout << ans << std::endl;
+
+    if(dist[n]==INF){
+        std::cout << -1 << std::endl;
+    }
+    else{
+        std::cout << dist[n] << std::endl;
+    }    
+
     return 0;
 }
