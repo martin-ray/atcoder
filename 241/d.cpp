@@ -33,16 +33,14 @@ int main(void){
                 if(it==st.begin()){
                     flag = false;break;
                 }
-                else{
-                    it--;
-                }
+                it--;
                 
             }
             //cout << "ans1:" << endl;
             if(flag)cout << *it << endl;
             else cout << -1 << endl;
         }
-        else{
+        else if(type==3){
             int k;
             cin >> k;
             bool flag = true;
@@ -51,9 +49,8 @@ int main(void){
                 if(it==st.end()){
                     flag= false;break;
                 }
-                else{
-                    it++;
-                }
+                it++;
+                
             }
             //cout << "ans2:" << endl;
             if(flag&&it!=st.end()) cout << *it << endl;
