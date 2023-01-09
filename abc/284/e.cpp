@@ -14,21 +14,18 @@
 using namespace std;
 
 int ans = 0;
-int N;
 
-void dfs(const vector<vector<int>>& graph,bitset<200000> visited,int now){
+void dfs(const vector<vector<int>>& graph,bool visited[],int now){
     for(auto next : graph[now]){
         if(visited[next])continue;
-        //visited[next] = true;
-        visited.set(next);
+        visited[next] = true;
         ans++;
         if(ans>1000000){
             cout << 1000000 << endl;
             exit(0);
         }
         dfs(graph,visited,next);
-        //visited[next] = false;
-        visited.reset(next);
+        visited[next] = false;
     }
     return;
 }
@@ -40,10 +37,10 @@ long long int my_min(long long int a , long long int b){
 
 int main(void){
 
-    int m;
-    cin >> N >> m;
+    int n,m;
+    cin >> n >> m;
 
-    vector<vector<int>> adj_list(N,vector<int>());
+    vector<vector<int>> adj_list(n,vector<int>());
     for(int i=0;i<m;i++){
         int u,v;
         cin >> u >> v;u--;v--;
@@ -51,12 +48,10 @@ int main(void){
         adj_list[v].push_back(u);
     }
 
-    // vector<char> visited(n,false);
-    bitset<200000> visited;
-    // bool visited[n];
-    //for(int i=0;i<N;i++)visited.reset(i);
-    visited.reset();
-    visited.set(0);
+    // vector<bool> visited(n,false);
+    bool visited[n];
+    for(int i=0;i<n;i++)visited[i]=false;
+    visited[0] = true;
 
     dfs(adj_list,visited,0);
 
