@@ -10,6 +10,8 @@
 #include <iomanip>
 #include<queue> //do not forget about priority_queue;
 //std::cout << std::setprecision(2) << 3.141; // "3.1"
+#define MOD 1000000007
+using namespace std;
 
 int main(void){
 
