@@ -12,10 +12,8 @@
 //std::cout << std::setprecision(2) << 3.141; // "3.1"
 #define MOD 1000000007
 using namespace std;
-/* UnionFind：素集合系管理の構造体(union by rank)
-    isSame(x, y): x と y が同じ集合にいるか。 計算量はならし O(α(n))
-    unite(x, y): x と y を同じ集合にする。計算量はならし O(α(n))
-*/
+
+
 struct UnionFind {  // The range of node number is u 0 v n-1
     vector<int> rank, parents;
     UnionFind() {}
@@ -48,6 +46,7 @@ struct UnionFind {  // The range of node number is u 0 v n-1
         return parents[x];
     }
 };
+
 // 辺の定義
 struct Edge {
     long long u;
@@ -61,42 +60,40 @@ bool comp_e(const Edge &e1, const Edge &e2) { return e1.cost < e2.cost; } // 辺
     最小全域木の重みの総和: sum
     計算量: O(|E|log|V|)
 */
-struct Kruskal {
-    UnionFind uft;
-    long long sum;  // 最小全域木の重みの総和
-    vector<Edge> edges;
-    int V;
-    Kruskal(const vector<Edge> &edges_, int V_) : edges(edges_), V(V_) { init(); }
-    void init() {
-        sort(edges.begin(), edges.end(), comp_e); // 辺の重みでソート
-        uft = UnionFind(V);
-        sum = 0;
-        for (auto e : edges) {
-            if (!uft.isSame(e.u, e.v)) { // 閉路にならなければ加える
-                uft.unite(e.u, e.v);
-                sum += e.cost;
-            }
-        }
-    }
-};
+
 
 int main() {
     int V, E;
     cin >> V >> E;
     vector<Edge> edges(E);
+    UnionFind uf(V);
 
-    long long int sum_of_cost = 0;
     for (int i = 0; i < E; i++) {
         long long s, t, w;
         cin >> s >> t >> w;
         s--;t--;
         Edge e = {s, t, w};
         edges[i] = e;
-        sum_of_cost += w;
     }
 
+    long long int ans = 0;
+    sort(edges.begin(), edges.end(), comp_e);
 
-    Kruskal krs(edges, V);
-    cout << sum_of_cost - krs.sum << endl;
+    for(auto e : edges){
+        if(e.cost < 0){
+            uf.unite(e.v,e.u);
+            continue;
+        } else {
+            if(uf.isSame(e.u,e.v)){
+                ans += e.cost;
+                continue;
+            } else {
+                uf.unite(e.v,e.u);
+            }
+        }
+    }
+
+    cout <<  ans << endl;
+
     return 0;
 }
